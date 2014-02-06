@@ -21,8 +21,6 @@ require "time"
 
 module Grn2Drn
   class GroongaCommandConverter
-    STATUS_OK = 200
-
     def initialize(options={})
       @options = options
       @count = 0
@@ -57,7 +55,7 @@ module Grn2Drn
         parsed_values << value
       end
       @command_parser.on_load_complete do |command|
-        command[:columns] = parsed_columns.join(",")
+        command[:columns] ||= parsed_columns.join(",") if parsed_columns
         command[:values] = parsed_values.to_json
         split_load_command_to_add_commands(command, &block)
       end
@@ -82,7 +80,6 @@ module Grn2Drn
         :id => id,
         :date => format_date(@options[:date] || Time.now),
         :replyTo => @options[:reply_to],
-        :statusCode => @options[:status_code] || STATUS_OK,
         :dataset => @options[:dataset],
         :type => type,
         :body => body,
@@ -113,7 +110,7 @@ module Grn2Drn
     end
 
     def split_load_command_to_add_commands(command, &block)
-      columns = command[:columns].split(",")
+      columns = command.columns
       values = command[:values]
       values = JSON.parse(values)
       values.each do |record|
@@ -121,13 +118,19 @@ module Grn2Drn
           :table => command[:table],
         }
 
-        record_values = {}
-        record.each_with_index do |value, column_index|
-          column = columns[column_index]
-          if column == "_key"
-            body[:key] = value
-          else
-            record_values[column.to_sym] = value
+        if record.is_a?(Hash)
+          record = record.dup
+          body[:key] = record.delete("_key")
+          record_values = record
+        else
+          record_values = {}
+          record.each_with_index do |value, column_index|
+            column = columns[column_index]
+            if column == "_key"
+              body[:key] = value
+            else
+              record_values[column.to_sym] = value
+            end
           end
         end
         body[:values] = record_values unless record_values.empty?
