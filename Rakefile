@@ -32,6 +32,5 @@ spec = helper.gemspec
 
 desc "Run tests"
 task :test do
-  # No test
-  # ruby("test/run-test.rb")
+  ruby("test/run-test.rb")
 end
