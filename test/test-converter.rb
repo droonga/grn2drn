@@ -108,6 +108,33 @@ column_create Terms Users_name COLUMN_INDEX|WITH_POSITION Users name
 load --table Users
 [
 ["_key","name"],
+["user","Abe Shinzo"]
+]
+      COMMAND
+      assert_equal([
+                     {
+                       :id => "test:0",
+                       :date => formatted_date,
+                       :replyTo => reply_to,
+                       :dataset => dataset,
+                       :type => "add",
+                       :body => {
+                         :table => "Users",
+                         :key => "user",
+                         :values => {
+                           :name => "Abe Shinzo",
+                         },
+                       },
+                     },
+                   ],
+                   convert(command))
+    end
+
+    def test_multi_records
+      command = <<-COMMAND.chomp
+load --table Users
+[
+["_key","name"],
 ["user0","Abe Shinzo"],
 ["user1","Noda Yoshihiko"],
 ["user2","Kan Naoto"]
