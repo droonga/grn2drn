@@ -23,34 +23,43 @@ require "grn2drn/converter"
 
 options = OpenStruct.new
 option_parser = OptionParser.new do |parser|
-  parser.on("-i=ID", "--id=ID",
-            "base id. (optional)") do |id|
-    options.id = id
+  parser.separator("")
+  parser.separator("Converts Groonga commands to Droonga messages")
+
+  parser.separator("")
+  parser.separator("Required parameters:")
+  parser.on("--dataset=DATASET",
+            "Use DATASET as \"dataset\" field value") do |dataset|
+    options.dataset = dataset
   end
 
-  parser.on("-d=DATE", "--date=DATE",
-            "date. (optional)") do |date|
+  parser.separator("")
+  parser.separator("Optional parameters:")
+  parser.on("--id-prefix=PREFIX",
+            "Use PREFIX as prefix of IDs") do |prefix|
+    options.id_prefix = prefix
+  end
+
+  parser.on("--date=DATE",
+            "Use DATE as \"date\" field value") do |date|
     options.date = date
   end
 
-  parser.on("-r=REPLYTO", "--reply-to=REPLYTO",
-            "value of replyTo field.") do |reply_to|
-    options.reply_to = reply_to
-  end
-
-  parser.on("-s=DATASET", "--dataset=DATASET",
-            "dataset.") do |dataset|
-    options.dataset = dataset
+  parser.on("--reply-to=TO",
+            "Use TO as \"replyTo\" field value",
+            "Responses from Droonga engine will be sent to TO.") do |to|
+    options.reply_to = to
   end
 end
 args = option_parser.parse!(ARGV)
 
 if options.dataset.nil?
-  raise "You must specify the name of the dataset by --dataset option."
+  puts("--dataset option is missed.")
+  exit(false)
 end
 
 convert_options = {
-  :id => options.id,
+  :id_prefix => options.id_prefix,
   :date => options.date,
   :reply_to => options.reply_to,
   :dataset => options.dataset,
