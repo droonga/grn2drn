@@ -28,11 +28,11 @@ class ConverterTest < Test::Unit::TestCase
   end
 
   def convert(groonga_commands)
-    droonga_commands = []
-    converter.convert(groonga_commands) do |droonga_command|
-      droonga_commands << droonga_command
+    droonga_messages = []
+    converter.convert(groonga_commands) do |droonga_message|
+      droonga_messages << droonga_message
     end
-    droonga_commands
+    droonga_messages
   end
 
   def date
