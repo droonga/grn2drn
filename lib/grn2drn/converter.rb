@@ -70,11 +70,11 @@ module Grn2Drn
 
     private
     def create_message(type, body)
-      base_id = @options[:base_id]
-      if base_id.nil?
+      id_prefix = @options[:id_prefix]
+      if id_prefix.nil?
         id = new_unique_id
       else
-        id = "#{base_id}:#{@count}"
+        id = "#{id_prefix}:#{@count}"
         @count += 1
       end
 
