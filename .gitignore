@@ -1,1 +1,4 @@
+*.pot
+/.yardoc/
+/doc/reference/
 /Gemfile.lock

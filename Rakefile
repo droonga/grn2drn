@@ -17,8 +17,8 @@
 
 task :default => :test
 
-require "rubygems"
 require "bundler/gem_helper"
+require "packnga"
 
 base_dir = File.join(File.dirname(__FILE__))
 
@@ -29,6 +29,11 @@ end
 
 helper.install
 spec = helper.gemspec
+
+Packnga::DocumentTask.new(spec) do |task|
+  task.original_language = "en"
+  task.translate_languages = ["ja"]
+end
 
 desc "Run tests"
 task :test do

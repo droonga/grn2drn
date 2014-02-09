@@ -35,6 +35,7 @@ Gem::Specification.new do |spec|
   spec.summary, spec.description, = description.split(/\n\n+/, 3)
   spec.license = "GPLv3 or later"
   spec.files = ["README.md", "Rakefile", "Gemfile", "#{spec.name}.gemspec"]
+  spec.files += Dir.glob("doc/text/**/*.rb")
   spec.files += Dir.glob("lib/**/*.rb")
   Dir.chdir("bin") do
     spec.executables = Dir.glob("*")
@@ -46,4 +47,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("bundler")
   spec.add_development_dependency("rake")
   spec.add_development_dependency("test-unit")
+  spec.add_development_dependency("packnga")
+  spec.add_development_dependency("kramdown")
 end
