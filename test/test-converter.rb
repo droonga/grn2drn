@@ -19,7 +19,7 @@ class ConverterTest < Test::Unit::TestCase
   private
   def converter
     options = {
-      :id => "test",
+      :base_id => "test",
       :date => date,
       :reply_to => reply_to,
       :dataset => dataset,
