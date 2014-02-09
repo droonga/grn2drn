@@ -13,9 +13,9 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-require "grn2drn/groonga-command-converter"
+require "grn2drn/converter"
 
-class GroongaCommandConverterTest < Test::Unit::TestCase
+class ConverterTest < Test::Unit::TestCase
   def setup
     options = {
       :id => "test",
@@ -23,7 +23,7 @@ class GroongaCommandConverterTest < Test::Unit::TestCase
       :reply_to => reply_to,
       :dataset => dataset,
     }
-    @converter = Grn2Drn::GroongaCommandConverter.new(options)
+    @converter = Grn2Drn::Converter.new(options)
   end
 
   def test_table_create

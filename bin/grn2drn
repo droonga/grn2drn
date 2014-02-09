@@ -55,7 +55,7 @@ convert_options = {
   :reply_to => options.reply_to,
   :dataset => options.dataset,
 }
-converter = Grn2Drn::GroongaCommandConverter.new(convert_options)
+converter = Grn2Drn::Converter.new(convert_options)
 
 source_file = args[0]
 result_file = args[1]
