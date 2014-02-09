@@ -59,17 +59,17 @@ table_create Terms TABLE_PAT_KEY ShortText \
       COMMAND
       assert_equal([
                      {
-                       :id => "test:0",
-                       :date => formatted_date,
-                       :replyTo => reply_to,
-                       :dataset => dataset,
-                       :type => "table_create",
-                       :body => {
-                         :name => "Terms",
-                         :flags => "TABLE_PAT_KEY",
-                         :key_type => "ShortText",
-                         :default_tokenizer => "TokenBigram",
-                         :normalizer => "NormalizerAuto",
+                       "id" => "test:0",
+                       "date" => formatted_date,
+                       "replyTo" => reply_to,
+                       "dataset" => dataset,
+                       "type" => "table_create",
+                       "body" => {
+                         "name" => "Terms",
+                         "flags" => "TABLE_PAT_KEY",
+                         "key_type" => "ShortText",
+                         "default_tokenizer" => "TokenBigram",
+                         "normalizer" => "NormalizerAuto",
                        },
                      },
                    ],
@@ -84,17 +84,17 @@ column_create Terms Users_name COLUMN_INDEX|WITH_POSITION Users name
       COMMAND
       assert_equal([
                      {
-                       :id => "test:0",
-                       :date => formatted_date,
-                       :replyTo => reply_to,
-                       :dataset => dataset,
-                       :type => "column_create",
-                       :body => {
-                         :table => "Terms",
-                         :name => "Users_name",
-                         :flags => "COLUMN_INDEX|WITH_POSITION",
-                         :type => "Users",
-                         :source => "name",
+                       "id" => "test:0",
+                       "date" => formatted_date,
+                       "replyTo" => reply_to,
+                       "dataset" => dataset,
+                       "type" => "column_create",
+                       "body" => {
+                         "table" => "Terms",
+                         "name" => "Users_name",
+                         "flags" => "COLUMN_INDEX|WITH_POSITION",
+                         "type" => "Users",
+                         "source" => "name",
                        },
                      },
                    ],
@@ -113,16 +113,16 @@ load --table Users
       COMMAND
       assert_equal([
                      {
-                       :id => "test:0",
-                       :date => formatted_date,
-                       :replyTo => reply_to,
-                       :dataset => dataset,
-                       :type => "add",
-                       :body => {
-                         :table => "Users",
-                         :key => "user",
-                         :values => {
-                           :name => "Abe Shinzo",
+                       "id" => "test:0",
+                       "date" => formatted_date,
+                       "replyTo" => reply_to,
+                       "dataset" => dataset,
+                       "type" => "add",
+                       "body" => {
+                         "table" => "Users",
+                         "key" => "user",
+                         "values" => {
+                           "name" => "Abe Shinzo",
                          },
                        },
                      },
@@ -142,44 +142,44 @@ load --table Users
       COMMAND
       assert_equal([
                      {
-                       :id => "test:0",
-                       :date => formatted_date,
-                       :replyTo => reply_to,
-                       :dataset => dataset,
-                       :type => "add",
-                       :body => {
-                         :table => "Users",
-                         :key => "user0",
-                         :values => {
-                           :name => "Abe Shinzo",
+                       "id" => "test:0",
+                       "date" => formatted_date,
+                       "replyTo" => reply_to,
+                       "dataset" => dataset,
+                       "type" => "add",
+                       "body" => {
+                         "table" => "Users",
+                         "key" => "user0",
+                         "values" => {
+                           "name" => "Abe Shinzo",
                          },
                        },
                      },
                      {
-                       :id => "test:1",
-                       :date => formatted_date,
-                       :replyTo => reply_to,
-                       :dataset => dataset,
-                       :type => "add",
-                       :body => {
-                         :table => "Users",
-                         :key => "user1",
-                         :values => {
-                           :name => "Noda Yoshihiko",
+                       "id" => "test:1",
+                       "date" => formatted_date,
+                       "replyTo" => reply_to,
+                       "dataset" => dataset,
+                       "type" => "add",
+                       "body" => {
+                         "table" => "Users",
+                         "key" => "user1",
+                         "values" => {
+                           "name" => "Noda Yoshihiko",
                          },
                        },
                      },
                      {
-                       :id => "test:2",
-                       :date => formatted_date,
-                       :replyTo => reply_to,
-                       :dataset => dataset,
-                       :type => "add",
-                       :body => {
-                         :table => "Users",
-                         :key => "user2",
-                         :values => {
-                           :name => "Kan Naoto",
+                       "id" => "test:2",
+                       "date" => formatted_date,
+                       "replyTo" => reply_to,
+                       "dataset" => dataset,
+                       "type" => "add",
+                       "body" => {
+                         "table" => "Users",
+                         "key" => "user2",
+                         "values" => {
+                           "name" => "Kan Naoto",
                          },
                        },
                      },
@@ -195,15 +195,15 @@ select --filter "age<=30" --output_type "json" --table "Users"
       COMMAND
       assert_equal([
                      {
-                       :id => "test:0",
-                       :date => formatted_date,
-                       :replyTo => reply_to,
-                       :dataset => dataset,
-                       :type => "select",
-                       :body => {
-                         :table => "Users",
-                         :filter => "age<=30",
-                         :output_type => "json",
+                       "id" => "test:0",
+                       "date" => formatted_date,
+                       "replyTo" => reply_to,
+                       "dataset" => dataset,
+                       "type" => "select",
+                       "body" => {
+                         "table" => "Users",
+                         "filter" => "age<=30",
+                         "output_type" => "json",
                        },
                      },
                    ],
@@ -220,31 +220,31 @@ column_create Terms Users_name COLUMN_INDEX|WITH_POSITION Users name
       COMMANDS
       assert_equal([
                      {
-                       :id => "test:0",
-                       :date => formatted_date,
-                       :replyTo => reply_to,
-                       :dataset => dataset,
-                       :type => "table_create",
-                       :body => {
-                         :name => "Terms",
-                         :flags => "TABLE_PAT_KEY",
-                         :key_type => "ShortText",
-                         :default_tokenizer => "TokenBigram",
-                         :normalizer => "NormalizerAuto",
+                       "id" => "test:0",
+                       "date" => formatted_date,
+                       "replyTo" => reply_to,
+                       "dataset" => dataset,
+                       "type" => "table_create",
+                       "body" => {
+                         "name" => "Terms",
+                         "flags" => "TABLE_PAT_KEY",
+                         "key_type" => "ShortText",
+                         "default_tokenizer" => "TokenBigram",
+                         "normalizer" => "NormalizerAuto",
                        },
                      },
                      {
-                       :id => "test:1",
-                       :date => formatted_date,
-                       :replyTo => reply_to,
-                       :dataset => dataset,
-                       :type => "column_create",
-                       :body => {
-                         :table => "Terms",
-                         :name => "Users_name",
-                         :flags => "COLUMN_INDEX|WITH_POSITION",
-                         :type => "Users",
-                         :source => "name",
+                       "id" => "test:1",
+                       "date" => formatted_date,
+                       "replyTo" => reply_to,
+                       "dataset" => dataset,
+                       "type" => "column_create",
+                       "body" => {
+                         "table" => "Terms",
+                         "name" => "Users_name",
+                         "flags" => "COLUMN_INDEX|WITH_POSITION",
+                         "type" => "Users",
+                         "source" => "name",
                        },
                      },
                    ],

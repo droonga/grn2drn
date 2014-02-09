@@ -79,12 +79,12 @@ module Grn2Drn
       end
 
       {
-        :id => id,
-        :date => format_date(@options[:date] || Time.now),
-        :replyTo => @options[:reply_to],
-        :dataset => @options[:dataset],
-        :type => type,
-        :body => body,
+        "id" => id,
+        "date" => format_date(@options[:date] || Time.now),
+        "replyTo" => @options[:reply_to],
+        "dataset" => @options[:dataset],
+        "type" => type,
+        "body" => body,
       }
     end
 
@@ -99,16 +99,28 @@ module Grn2Drn
       time.iso8601
     end
 
+    def stringify_keys(hash)
+      stringified_hash = {}
+      hash.each do |key, value|
+        stringified_hash[key.to_s] = value
+      end
+      stringified_hash
+    end
+
+    def command_to_body(command)
+      stringify_keys(command.arguments)
+    end
+
     def create_table_create_command(command)
-      create_message("table_create", command.arguments)
+      create_message("table_create", command_to_body(command))
     end
 
     def create_table_remove_command(command)
-      create_message("table_remove", command.arguments)
+      create_message("table_remove", command_to_body(command))
     end
 
     def create_column_create_command(command)
-      create_message("column_create", command.arguments)
+      create_message("column_create", command_to_body(command))
     end
 
     def split_load_command_to_add_commands(command, &block)
@@ -117,32 +129,32 @@ module Grn2Drn
       values = JSON.parse(values)
       values.each do |record|
         body = {
-          :table => command[:table],
+          "table" => command[:table],
         }
 
         if record.is_a?(Hash)
           record = record.dup
-          body[:key] = record.delete("_key")
+          body["key"] = record.delete("_key")
           record_values = record
         else
           record_values = {}
           record.each_with_index do |value, column_index|
             column = columns[column_index]
             if column == "_key"
-              body[:key] = value
+              body["key"] = value
             else
-              record_values[column.to_sym] = value
+              record_values[column] = value
             end
           end
         end
-        body[:values] = record_values unless record_values.empty?
+        body["values"] = record_values unless record_values.empty?
 
         yield create_message("add", body)
       end
     end
 
     def create_select_command(command)
-      create_message("select", command.arguments)
+      create_message("select", command_to_body(command))
     end
   end
 end
