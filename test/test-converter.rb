@@ -26,6 +26,7 @@ class ConverterTest < Test::Unit::TestCase
     @converter = Grn2Drn::Converter.new(options)
   end
 
+  class TableCreateTest < self
   def test_table_create
     droonga_commands = []
     command = <<-COMMAND.chomp
@@ -53,7 +54,9 @@ table_create Terms TABLE_PAT_KEY ShortText \
                  ],
                  droonga_commands)
   end
+  end
 
+  class ColumnCreateTest < self
   def test_column_create
     droonga_commands = []
     command = <<-COMMAND.chomp
@@ -80,7 +83,9 @@ column_create Terms Users_name COLUMN_INDEX|WITH_POSITION Users name
                  ],
                  droonga_commands)
   end
+  end
 
+  class LoadTest < self
   def test_load
     droonga_commands = []
     command = <<-COMMAND.chomp
@@ -141,7 +146,9 @@ load --table Users
                  ],
                  droonga_commands)
   end
+  end
 
+  class SelectTest < self
   def test_select
     droonga_commands = []
     command = <<-COMMAND.chomp
@@ -166,7 +173,9 @@ select --filter "age<=30" --output_type "json" --table "Users"
                  ],
                  droonga_commands)
   end
+  end
 
+  class MultipleCommandsTest < self
   def test_multiple_commands
     droonga_commands = []
     commands = <<-COMMANDS.chomp
@@ -208,6 +217,7 @@ column_create Terms Users_name COLUMN_INDEX|WITH_POSITION Users name
                    },
                  ],
                  droonga_commands)
+  end
   end
 
   private
