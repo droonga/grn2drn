@@ -26,6 +26,23 @@ class ConverterTest < Test::Unit::TestCase
     @converter = Grn2Drn::Converter.new(options)
   end
 
+  private
+  def date
+    Time.utc(2013, 11, 29, 0, 0, 0)
+  end
+
+  def formatted_date
+    "2013-11-29T00:00:00Z"
+  end
+
+  def reply_to
+    "localhost:20033"
+  end
+
+  def dataset
+    "test-dataset"
+  end
+
   class TableCreateTest < self
     def test_table_create
       droonga_commands = []
@@ -218,22 +235,5 @@ column_create Terms Users_name COLUMN_INDEX|WITH_POSITION Users name
                    ],
                    droonga_commands)
     end
-  end
-
-  private
-  def date
-    Time.utc(2013, 11, 29, 0, 0, 0)
-  end
-
-  def formatted_date
-    "2013-11-29T00:00:00Z"
-  end
-
-  def reply_to
-    "localhost:20033"
-  end
-
-  def dataset
-    "test-dataset"
   end
 end
