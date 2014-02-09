@@ -27,68 +27,68 @@ class ConverterTest < Test::Unit::TestCase
   end
 
   class TableCreateTest < self
-  def test_table_create
-    droonga_commands = []
-    command = <<-COMMAND.chomp
+    def test_table_create
+      droonga_commands = []
+      command = <<-COMMAND.chomp
 table_create Terms TABLE_PAT_KEY ShortText \
   --default_tokenizer TokenBigram --normalizer NormalizerAuto
-    COMMAND
-    @converter.convert(command) do |droonga_command|
-      droonga_commands << droonga_command
-    end
-    assert_equal([
-                   {
-                     :id => "test:0",
-                     :date => formatted_date,
-                     :replyTo => reply_to,
-                     :dataset => dataset,
-                     :type => "table_create",
-                     :body => {
-                       :name => "Terms",
-                       :flags => "TABLE_PAT_KEY",
-                       :key_type => "ShortText",
-                       :default_tokenizer => "TokenBigram",
-                       :normalizer => "NormalizerAuto",
+      COMMAND
+      @converter.convert(command) do |droonga_command|
+        droonga_commands << droonga_command
+      end
+      assert_equal([
+                     {
+                       :id => "test:0",
+                       :date => formatted_date,
+                       :replyTo => reply_to,
+                       :dataset => dataset,
+                       :type => "table_create",
+                       :body => {
+                         :name => "Terms",
+                         :flags => "TABLE_PAT_KEY",
+                         :key_type => "ShortText",
+                         :default_tokenizer => "TokenBigram",
+                         :normalizer => "NormalizerAuto",
+                       },
                      },
-                   },
-                 ],
-                 droonga_commands)
-  end
+                   ],
+                   droonga_commands)
+    end
   end
 
   class ColumnCreateTest < self
-  def test_column_create
-    droonga_commands = []
-    command = <<-COMMAND.chomp
+    def test_column_create
+      droonga_commands = []
+      command = <<-COMMAND.chomp
 column_create Terms Users_name COLUMN_INDEX|WITH_POSITION Users name
-    COMMAND
-    @converter.convert(command) do |droonga_command|
-      droonga_commands << droonga_command
-    end
-    assert_equal([
-                   {
-                     :id => "test:0",
-                     :date => formatted_date,
-                     :replyTo => reply_to,
-                     :dataset => dataset,
-                     :type => "column_create",
-                     :body => {
-                       :table => "Terms",
-                       :name => "Users_name",
-                       :flags => "COLUMN_INDEX|WITH_POSITION",
-                       :type => "Users",
-                       :source => "name",
+      COMMAND
+      @converter.convert(command) do |droonga_command|
+        droonga_commands << droonga_command
+      end
+      assert_equal([
+                     {
+                       :id => "test:0",
+                       :date => formatted_date,
+                       :replyTo => reply_to,
+                       :dataset => dataset,
+                       :type => "column_create",
+                       :body => {
+                         :table => "Terms",
+                         :name => "Users_name",
+                         :flags => "COLUMN_INDEX|WITH_POSITION",
+                         :type => "Users",
+                         :source => "name",
+                       },
                      },
-                   },
-                 ],
-                 droonga_commands)
-  end
+                   ],
+                   droonga_commands)
+    end
   end
 
   class LoadTest < self
-  def test_load
-    droonga_commands = []
-    command = <<-COMMAND.chomp
+    def test_load
+      droonga_commands = []
+      command = <<-COMMAND.chomp
 load --table Users
 [
 ["_key","name"],
@@ -96,128 +96,128 @@ load --table Users
 ["user1","Noda Yoshihiko"],
 ["user2","Kan Naoto"]
 ]
-    COMMAND
-    @converter.convert(command) do |droonga_command|
-      droonga_commands << droonga_command
+      COMMAND
+      @converter.convert(command) do |droonga_command|
+        droonga_commands << droonga_command
+      end
+      assert_equal([
+                     {
+                       :id => "test:0",
+                       :date => formatted_date,
+                       :replyTo => reply_to,
+                       :dataset => dataset,
+                       :type => "add",
+                       :body => {
+                         :table => "Users",
+                         :key => "user0",
+                         :values => {
+                           :name => "Abe Shinzo",
+                         },
+                       },
+                     },
+                     {
+                       :id => "test:1",
+                       :date => formatted_date,
+                       :replyTo => reply_to,
+                       :dataset => dataset,
+                       :type => "add",
+                       :body => {
+                         :table => "Users",
+                         :key => "user1",
+                         :values => {
+                           :name => "Noda Yoshihiko",
+                         },
+                       },
+                     },
+                     {
+                       :id => "test:2",
+                       :date => formatted_date,
+                       :replyTo => reply_to,
+                       :dataset => dataset,
+                       :type => "add",
+                       :body => {
+                         :table => "Users",
+                         :key => "user2",
+                         :values => {
+                           :name => "Kan Naoto",
+                         },
+                       },
+                     },
+                   ],
+                   droonga_commands)
     end
-    assert_equal([
-                   {
-                     :id => "test:0",
-                     :date => formatted_date,
-                     :replyTo => reply_to,
-                     :dataset => dataset,
-                     :type => "add",
-                     :body => {
-                       :table => "Users",
-                       :key => "user0",
-                       :values => {
-                         :name => "Abe Shinzo",
-                       },
-                     },
-                   },
-                   {
-                     :id => "test:1",
-                     :date => formatted_date,
-                     :replyTo => reply_to,
-                     :dataset => dataset,
-                     :type => "add",
-                     :body => {
-                       :table => "Users",
-                       :key => "user1",
-                       :values => {
-                         :name => "Noda Yoshihiko",
-                       },
-                     },
-                   },
-                   {
-                     :id => "test:2",
-                     :date => formatted_date,
-                     :replyTo => reply_to,
-                     :dataset => dataset,
-                     :type => "add",
-                     :body => {
-                       :table => "Users",
-                       :key => "user2",
-                       :values => {
-                         :name => "Kan Naoto",
-                       },
-                     },
-                   },
-                 ],
-                 droonga_commands)
-  end
   end
 
   class SelectTest < self
-  def test_select
-    droonga_commands = []
-    command = <<-COMMAND.chomp
+    def test_select
+      droonga_commands = []
+      command = <<-COMMAND.chomp
 select --filter "age<=30" --output_type "json" --table "Users"
-    COMMAND
-    @converter.convert(command) do |droonga_command|
-      droonga_commands << droonga_command
-    end
-    assert_equal([
-                   {
-                     :id => "test:0",
-                     :date => formatted_date,
-                     :replyTo => reply_to,
-                     :dataset => dataset,
-                     :type => "select",
-                     :body => {
-                       :table => "Users",
-                       :filter => "age<=30",
-                       :output_type => "json",
+      COMMAND
+      @converter.convert(command) do |droonga_command|
+        droonga_commands << droonga_command
+      end
+      assert_equal([
+                     {
+                       :id => "test:0",
+                       :date => formatted_date,
+                       :replyTo => reply_to,
+                       :dataset => dataset,
+                       :type => "select",
+                       :body => {
+                         :table => "Users",
+                         :filter => "age<=30",
+                         :output_type => "json",
+                       },
                      },
-                   },
-                 ],
-                 droonga_commands)
-  end
+                   ],
+                   droonga_commands)
+    end
   end
 
   class MultipleCommandsTest < self
-  def test_multiple_commands
-    droonga_commands = []
-    commands = <<-COMMANDS.chomp
+    def test_multiple_commands
+      droonga_commands = []
+      commands = <<-COMMANDS.chomp
 table_create Terms TABLE_PAT_KEY ShortText \
   --default_tokenizer TokenBigram --normalizer NormalizerAuto
 column_create Terms Users_name COLUMN_INDEX|WITH_POSITION Users name
-    COMMANDS
-    @converter.convert(commands) do |droonga_command|
-      droonga_commands << droonga_command
+      COMMANDS
+      @converter.convert(commands) do |droonga_command|
+        droonga_commands << droonga_command
+      end
+      assert_equal([
+                     {
+                       :id => "test:0",
+                       :date => formatted_date,
+                       :replyTo => reply_to,
+                       :dataset => dataset,
+                       :type => "table_create",
+                       :body => {
+                         :name => "Terms",
+                         :flags => "TABLE_PAT_KEY",
+                         :key_type => "ShortText",
+                         :default_tokenizer => "TokenBigram",
+                         :normalizer => "NormalizerAuto",
+                       },
+                     },
+                     {
+                       :id => "test:1",
+                       :date => formatted_date,
+                       :replyTo => reply_to,
+                       :dataset => dataset,
+                       :type => "column_create",
+                       :body => {
+                         :table => "Terms",
+                         :name => "Users_name",
+                         :flags => "COLUMN_INDEX|WITH_POSITION",
+                         :type => "Users",
+                         :source => "name",
+                       },
+                     },
+                   ],
+                   droonga_commands)
     end
-    assert_equal([
-                   {
-                     :id => "test:0",
-                     :date => formatted_date,
-                     :replyTo => reply_to,
-                     :dataset => dataset,
-                     :type => "table_create",
-                     :body => {
-                       :name => "Terms",
-                       :flags => "TABLE_PAT_KEY",
-                       :key_type => "ShortText",
-                       :default_tokenizer => "TokenBigram",
-                       :normalizer => "NormalizerAuto",
-                     },
-                   },
-                   {
-                     :id => "test:1",
-                     :date => formatted_date,
-                     :replyTo => reply_to,
-                     :dataset => dataset,
-                     :type => "column_create",
-                     :body => {
-                       :table => "Terms",
-                       :name => "Users_name",
-                       :flags => "COLUMN_INDEX|WITH_POSITION",
-                       :type => "Users",
-                       :source => "name",
-                     },
-                   },
-                 ],
-                 droonga_commands)
-  end
   end
 
   private
