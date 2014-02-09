@@ -44,7 +44,7 @@ class ConverterTest < Test::Unit::TestCase
   end
 
   class TableCreateTest < self
-    def test_table_create
+    def test_tokenizer_normalizer
       droonga_commands = []
       command = <<-COMMAND.chomp
 table_create Terms TABLE_PAT_KEY ShortText \
@@ -74,7 +74,7 @@ table_create Terms TABLE_PAT_KEY ShortText \
   end
 
   class ColumnCreateTest < self
-    def test_column_create
+    def test_index
       droonga_commands = []
       command = <<-COMMAND.chomp
 column_create Terms Users_name COLUMN_INDEX|WITH_POSITION Users name
@@ -103,7 +103,7 @@ column_create Terms Users_name COLUMN_INDEX|WITH_POSITION Users name
   end
 
   class LoadTest < self
-    def test_load
+    def test_array_style
       droonga_commands = []
       command = <<-COMMAND.chomp
 load --table Users
@@ -166,7 +166,7 @@ load --table Users
   end
 
   class SelectTest < self
-    def test_select
+    def test_key_value_style
       droonga_commands = []
       command = <<-COMMAND.chomp
 select --filter "age<=30" --output_type "json" --table "Users"
@@ -193,7 +193,7 @@ select --filter "age<=30" --output_type "json" --table "Users"
   end
 
   class MultipleCommandsTest < self
-    def test_multiple_commands
+    def test_schema
       droonga_commands = []
       commands = <<-COMMANDS.chomp
 table_create Terms TABLE_PAT_KEY ShortText \
