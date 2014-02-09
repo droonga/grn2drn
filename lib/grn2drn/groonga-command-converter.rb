@@ -17,6 +17,7 @@
 
 require "digest/sha1"
 require "time"
+require "json"
 
 require "groonga/command/parser"
 
