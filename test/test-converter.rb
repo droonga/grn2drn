@@ -130,6 +130,32 @@ load --table Users
                    convert(command))
     end
 
+    def test_object_style
+      command = <<-COMMAND.chomp
+load --table Users
+[
+{"_key": "user", "name": "Abe Shinzo"}
+]
+      COMMAND
+      assert_equal([
+                     {
+                       "id" => "test:0",
+                       "date" => formatted_date,
+                       "replyTo" => reply_to,
+                       "dataset" => dataset,
+                       "type" => "add",
+                       "body" => {
+                         "table" => "Users",
+                         "key" => "user",
+                         "values" => {
+                           "name" => "Abe Shinzo",
+                         },
+                       },
+                     },
+                   ],
+                   convert(command))
+    end
+
     def test_multi_records
       command = <<-COMMAND.chomp
 load --table Users
