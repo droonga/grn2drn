@@ -16,17 +16,25 @@
 require "grn2drn/converter"
 
 class ConverterTest < Test::Unit::TestCase
-  def setup
+  private
+  def converter
     options = {
       :id => "test",
       :date => date,
       :reply_to => reply_to,
       :dataset => dataset,
     }
-    @converter = Grn2Drn::Converter.new(options)
+    Grn2Drn::Converter.new(options)
   end
 
-  private
+  def convert(groonga_commands)
+    droonga_commands = []
+    converter.convert(groonga_commands) do |droonga_command|
+      droonga_commands << droonga_command
+    end
+    droonga_commands
+  end
+
   def date
     Time.utc(2013, 11, 29, 0, 0, 0)
   end
@@ -45,14 +53,10 @@ class ConverterTest < Test::Unit::TestCase
 
   class TableCreateTest < self
     def test_tokenizer_normalizer
-      droonga_commands = []
       command = <<-COMMAND.chomp
 table_create Terms TABLE_PAT_KEY ShortText \
   --default_tokenizer TokenBigram --normalizer NormalizerAuto
       COMMAND
-      @converter.convert(command) do |droonga_command|
-        droonga_commands << droonga_command
-      end
       assert_equal([
                      {
                        :id => "test:0",
@@ -69,19 +73,15 @@ table_create Terms TABLE_PAT_KEY ShortText \
                        },
                      },
                    ],
-                   droonga_commands)
+                   convert(command))
     end
   end
 
   class ColumnCreateTest < self
     def test_index
-      droonga_commands = []
       command = <<-COMMAND.chomp
 column_create Terms Users_name COLUMN_INDEX|WITH_POSITION Users name
       COMMAND
-      @converter.convert(command) do |droonga_command|
-        droonga_commands << droonga_command
-      end
       assert_equal([
                      {
                        :id => "test:0",
@@ -98,13 +98,12 @@ column_create Terms Users_name COLUMN_INDEX|WITH_POSITION Users name
                        },
                      },
                    ],
-                   droonga_commands)
+                   convert(command))
     end
   end
 
   class LoadTest < self
     def test_array_style
-      droonga_commands = []
       command = <<-COMMAND.chomp
 load --table Users
 [
@@ -114,9 +113,6 @@ load --table Users
 ["user2","Kan Naoto"]
 ]
       COMMAND
-      @converter.convert(command) do |droonga_command|
-        droonga_commands << droonga_command
-      end
       assert_equal([
                      {
                        :id => "test:0",
@@ -161,19 +157,15 @@ load --table Users
                        },
                      },
                    ],
-                   droonga_commands)
+                   convert(command))
     end
   end
 
   class SelectTest < self
     def test_key_value_style
-      droonga_commands = []
       command = <<-COMMAND.chomp
 select --filter "age<=30" --output_type "json" --table "Users"
       COMMAND
-      @converter.convert(command) do |droonga_command|
-        droonga_commands << droonga_command
-      end
       assert_equal([
                      {
                        :id => "test:0",
@@ -188,21 +180,17 @@ select --filter "age<=30" --output_type "json" --table "Users"
                        },
                      },
                    ],
-                   droonga_commands)
+                   convert(command))
     end
   end
 
   class MultipleCommandsTest < self
     def test_schema
-      droonga_commands = []
       commands = <<-COMMANDS.chomp
 table_create Terms TABLE_PAT_KEY ShortText \
   --default_tokenizer TokenBigram --normalizer NormalizerAuto
 column_create Terms Users_name COLUMN_INDEX|WITH_POSITION Users name
       COMMANDS
-      @converter.convert(commands) do |droonga_command|
-        droonga_commands << droonga_command
-      end
       assert_equal([
                      {
                        :id => "test:0",
@@ -233,7 +221,7 @@ column_create Terms Users_name COLUMN_INDEX|WITH_POSITION Users name
                        },
                      },
                    ],
-                   droonga_commands)
+                   convert(commands))
     end
   end
 end
