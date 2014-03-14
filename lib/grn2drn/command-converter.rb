@@ -22,7 +22,7 @@ require "json"
 require "groonga/command/parser"
 
 module Grn2Drn
-  class Converter
+  class CommandConverter
     def initialize(options={})
       @options = options
       @count = 0

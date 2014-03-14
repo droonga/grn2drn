@@ -13,9 +13,9 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-require "grn2drn/converter"
+require "grn2drn/command-converter"
 
-class ConverterTest < Test::Unit::TestCase
+class CommandConverterTest < Test::Unit::TestCase
   private
   def converter
     options = {
@@ -24,7 +24,7 @@ class ConverterTest < Test::Unit::TestCase
       :reply_to => reply_to,
       :dataset => dataset,
     }
-    Grn2Drn::Converter.new(options)
+    Grn2Drn::CommandConverter.new(options)
   end
 
   def convert(groonga_commands)
