@@ -51,8 +51,9 @@ module Grn2Drn
         @tables[command[:name]] = Table.new(command)
       end
 
-      def on_column_craete_command(command)
-        @tables[command.table].add_column(Column.new(command))
+      def on_column_create_command(command)
+        @tables[command.table].add_column(command[:name],
+                                          Column.new(command))
       end
 
       def to_droonga_schema
@@ -67,11 +68,11 @@ module Grn2Drn
     class Table
       def initialize(table_create_command)
         @command = table_create_command
-        @columns = []
+        @columns = {}
       end
 
-      def add_column(column_create_command)
-        @columns << Column.new(column_create_command)
+      def add_column(name, column)
+        @columns[name] = column
       end
 
       def to_droonga_schema
@@ -80,7 +81,7 @@ module Grn2Drn
         set_schema_item(schema, "keyType", key_type)
         set_schema_item(schema, "tokenizer", tokenizer)
         set_schema_item(schema, "normalizer", normalizer)
-        set_schema_item(schema, "columns", @columns.collect(&:to_droonga_schema))
+        set_schema_item(schema, "columns", droonga_schema_columns)
         schema
       end
 
@@ -121,6 +122,15 @@ module Grn2Drn
       def normalizer
         @command.normalizer
       end
+
+      def droonga_schema_columns
+        return nil if @columns.empty?
+        schema = {}
+        @columns.each do |name, column|
+          schema[name] = column.to_droonga_schema
+        end
+        schema
+      end
     end
 
     class Column
@@ -129,7 +139,7 @@ module Grn2Drn
       end
 
       def to_droonga_schema
-        shcema = {}
+        schema = {}
         set_schema_item(schema, "type", type)
         set_schema_item(schema, "valueType", value_type)
         set_schema_item(schema, "vectorOptions", vector_options)
@@ -156,23 +166,23 @@ module Grn2Drn
       end
 
       def value_type
-        @column.type
+        @command.type
       end
 
-      def weight_options
-        return nil unless @column.column_vector?
+      def vector_options
+        return nil unless @command.column_vector?
         {
-          "weight" => @column.with_weight?,
+          "weight" => @command.with_weight?,
         }
       end
 
       def index_options
-        return nil unless @column.column_index?
+        return nil unless @command.column_index?
         {
-          "section"  => @column.with_section?,
-          "weight"   => @column.with_weight?,
-          "position" => @column.with_position?,
-          "sources"  => @column.sources,
+          "section"  => @command.with_section?,
+          "weight"   => @command.with_weight?,
+          "position" => @command.with_position?,
+          "sources"  => @command.sources,
         }
       end
     end
