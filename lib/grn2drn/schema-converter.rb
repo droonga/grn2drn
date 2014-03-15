@@ -15,8 +15,18 @@
 
 require "groonga/command/parser"
 
+require "grn2drn/error"
+
 module Grn2Drn
   class SchemaConverter
+    class UnknownTable < Error
+      attr_reader :table
+      def initialize(table)
+        @table = table
+        super("Unknown table: <#{@table}>")
+      end
+    end
+
     def initialize(options={})
       @options = options
     end
@@ -52,8 +62,11 @@ module Grn2Drn
       end
 
       def on_column_create_command(command)
-        @tables[command.table].add_column(command[:name],
-                                          Column.new(command))
+        table_name = command.table
+        table = @tables[table_name]
+        raise UnknownTable.new(table_name) if table.nil?
+        table.add_column(command[:name],
+                         Column.new(command))
       end
 
       def to_droonga_schema

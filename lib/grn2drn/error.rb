@@ -1,6 +1,3 @@
-#!/usr/bin/env ruby
-# -*- coding: utf-8 -*-
-#
 # Copyright (C) 2014 Droonga Project
 #
 # This library is free software; you can redistribute it and/or
@@ -16,15 +13,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-require "json"
-
-require "grn2drn/schema-converter"
-
-converter = Grn2Drn::SchemaConverter.new
-begin
-  schema = converter.convert(ARGF)
-rescue Grn2Drn::Error
-  puts($!.message)
-  exit(false)
+module Grn2Drn
+  class Error < StandardError
+  end
 end
-puts(JSON.pretty_generate(schema))

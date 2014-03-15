@@ -351,5 +351,15 @@ column_create Terms index COLUMN_INDEX|WITH_SECTION|WITH_POSITION \
                      index_options(command))
       end
     end
+
+    class UnknownTableTest < self
+      def test_no_table_definition
+        assert_raise(Grn2Drn::SchemaConverter::UnknownTable.new("Logs")) do
+          convert(<<-COMMAND)
+column_create Logs date COLUMN_SCALAR Time
+          COMMAND
+        end
+      end
+    end
   end
 end
