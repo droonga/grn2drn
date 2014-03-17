@@ -44,22 +44,12 @@ module Grn2Drn
         end
       end
 
-      parsed_values = nil
       parsed_columns = nil
-      @command_parser.on_load_start do |command|
-        parsed_values = []
-        parsed_columns = nil
-      end
       @command_parser.on_load_columns do |command, columns|
         parsed_columns = columns
       end
       @command_parser.on_load_value do |command, value|
-        parsed_values << value
-      end
-      @command_parser.on_load_complete do |command|
-        command[:columns] ||= parsed_columns.join(",") if parsed_columns
-        command[:values] = parsed_values.to_json
-        split_load_command_to_add_commands(command, &block)
+        yield create_add_command(command, parsed_columns, value)
       end
 
       input.each_line do |line|
@@ -123,34 +113,30 @@ module Grn2Drn
       create_message("column_create", command_to_body(command))
     end
 
-    def split_load_command_to_add_commands(command, &block)
-      columns = command.columns
-      values = command[:values]
-      values = JSON.parse(values)
-      values.each do |record|
-        body = {
-          "table" => command[:table],
-        }
+    def create_add_command(command, columns, record)
+      table = command[:table]
+      body = {
+        "table" => table,
+      }
 
-        if record.is_a?(Hash)
-          record = record.dup
-          body["key"] = record.delete("_key")
-          record_values = record
-        else
-          record_values = {}
-          record.each_with_index do |value, column_index|
-            column = columns[column_index]
-            if column == "_key"
-              body["key"] = value
-            else
-              record_values[column] = value
-            end
+      if record.is_a?(Hash)
+        values = record.dup
+        body["key"] = values.delete("_key")
+        body["values"] = values
+      else
+        values = {}
+        record.each_with_index do |value, column_index|
+          column = columns[column_index]
+          if column == "_key"
+            body["key"] = value
+          else
+            values[column] = value
           end
         end
-        body["values"] = record_values unless record_values.empty?
-
-        yield create_message("add", body)
+        body["values"] = values
       end
+
+      create_message("add", body)
     end
 
     def create_select_command(command)
