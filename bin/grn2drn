@@ -69,20 +69,30 @@ converter = Grn2Drn::CommandConverter.new(convert_options)
 source_file = args[0]
 result_file = args[1]
 
-if source_file.nil?
-  input = STDIN
-else
-  input = File.open(source_file)
+def open_input(source_file)
+  if source_file.nil?
+    yield(STDIN)
+  else
+    File.open(source_file) do |input|
+      yield(input)
+    end
+  end
 end
 
-if result_file.nil?
-  converter.convert(input) do |command|
-    puts(JSON.generate(command))
+def open_output(result_file)
+  if result_file.nil?
+    yield($stdout)
+  else
+    File.open("w", result_file) do |output|
+      yield(output)
+    end
   end
-else
-  File.open("w", result_file) do |file|
+end
+
+open_input(source_file) do |input|
+  open_output(result_file) do |output|
     converter.convert(input) do |command|
-      file.puts(JSON.generate(command))
+      output.puts(JSON.generate(command))
     end
   end
 end
