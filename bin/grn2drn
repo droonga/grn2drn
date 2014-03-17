@@ -76,8 +76,6 @@ else
   input = File.read(source_file)
 end
 
-result_file = args[1]
-
 if result_file.nil?
   converter.convert(input) do |command|
     puts(JSON.generate(command))
