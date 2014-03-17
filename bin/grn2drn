@@ -69,11 +69,10 @@ converter = Grn2Drn::CommandConverter.new(convert_options)
 source_file = args[0]
 result_file = args[1]
 
-input = nil
 if source_file.nil?
-  input = STDIN.read
+  input = STDIN
 else
-  input = File.read(source_file)
+  input = File.open(source_file)
 end
 
 if result_file.nil?
