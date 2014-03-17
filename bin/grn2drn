@@ -71,7 +71,7 @@ result_file = args[1]
 
 def open_input(source_file)
   if source_file.nil?
-    yield(STDIN)
+    yield($stdin)
   else
     File.open(source_file) do |input|
       yield(input)
