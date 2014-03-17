@@ -50,6 +50,7 @@ module Grn2Drn
       end
       @command_parser.on_load_value do |command, value|
         yield create_add_command(command, parsed_columns, value)
+        command.original_source.clear
       end
 
       input.each_line do |line|

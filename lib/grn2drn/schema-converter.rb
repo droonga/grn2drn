@@ -44,6 +44,10 @@ module Grn2Drn
         end
       end
 
+      command_parser.on_load_value do |command, value|
+        command.original_source.clear
+      end
+
       input.each_line do |line|
         command_parser << line
       end
