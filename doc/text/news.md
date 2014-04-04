@@ -1,5 +1,12 @@
 # News
 
+## 1.0.2: 2014-04-04
+
+### Improvements
+
+  * `grn2drn`: Added `--output` option.
+  * `grn2drn-schema`: Added `--output` option.
+
 ## 1.0.1: 2014-03-29
 
 ### Improvements
