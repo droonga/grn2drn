@@ -24,7 +24,7 @@ converter = Grn2Drn::SchemaConverter.new
 begin
   schema = converter.convert(ARGF)
 rescue Grn2Drn::Error
-  puts($!.message)
+  $stderr.puts($!.message)
   exit(false)
 end
 puts(JSON.pretty_generate(schema))
