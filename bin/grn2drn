@@ -64,7 +64,7 @@ end
 option_parser.parse!(ARGV)
 
 if options.dataset.nil?
-  puts("--dataset option is missed.")
+  $stderr.puts("--dataset option is missed.")
   exit(false)
 end
 
