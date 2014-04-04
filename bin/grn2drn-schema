@@ -16,9 +16,40 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+require "ostruct"
+require "optparse"
 require "json"
 
 require "grn2drn/schema-converter"
+
+def open_output(path)
+  if path == "-"
+    yield($stdout)
+  else
+    File.open(path, "w") do |output|
+      yield(output)
+    end
+  end
+end
+
+options = OpenStruct.new
+options.output_path = "-"
+option_parser = OptionParser.new do |parser|
+  parser.banner += " INPUT"
+
+  parser.separator("")
+  parser.separator("Converts Groonga schema to Droonga schema")
+
+  parser.separator("")
+  parser.separator("Optional parameters:")
+  parser.on("--output=PATH",
+            "Output Droonga messages to PATH.",
+            "\"-\" means the standard output.",
+            "(#{options.output_path})") do |path|
+    options.output_path = path
+  end
+end
+option_parser.parse!(ARGV)
 
 converter = Grn2Drn::SchemaConverter.new
 begin
@@ -27,4 +58,7 @@ rescue Grn2Drn::Error
   $stderr.puts($!.message)
   exit(false)
 end
-puts(JSON.pretty_generate(schema))
+
+open_output(options.output_path) do |output|
+  output.puts(JSON.pretty_generate(schema))
+end
