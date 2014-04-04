@@ -22,7 +22,10 @@ require "optparse"
 require "grn2drn/command-converter"
 
 options = OpenStruct.new
+options.output_path = "-"
 option_parser = OptionParser.new do |parser|
+  parser.banner += " INPUT"
+
   parser.separator("")
   parser.separator("Converts Groonga commands to Droonga messages")
 
@@ -50,6 +53,13 @@ option_parser = OptionParser.new do |parser|
             "Responses from Droonga engine will be sent to TO.") do |to|
     options.reply_to = to
   end
+
+  parser.on("--output=PATH",
+            "Output Droonga messages to PATH.",
+            "\"-\" means the standard output.",
+            "(#{options.output_path})") do |path|
+    options.output_path = path
+  end
 end
 args = option_parser.parse!(ARGV)
 
@@ -66,9 +76,6 @@ convert_options = {
 }
 converter = Grn2Drn::CommandConverter.new(convert_options)
 
-source_file = args[0]
-result_file = args[1]
-
 def open_input(source_file)
   if source_file.nil?
     yield($stdin)
@@ -79,20 +86,18 @@ def open_input(source_file)
   end
 end
 
-def open_output(result_file)
-  if result_file.nil?
+def open_output(path)
+  if path == "-"
     yield($stdout)
   else
-    File.open("w", result_file) do |output|
+    File.open(path, "w") do |output|
       yield(output)
     end
   end
 end
 
-open_input(source_file) do |input|
-  open_output(result_file) do |output|
-    converter.convert(input) do |command|
-      output.puts(JSON.generate(command))
-    end
+open_output(options.output_path) do |output|
+  converter.convert(ARGF) do |command|
+    output.puts(JSON.generate(command))
   end
 end
