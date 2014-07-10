@@ -20,6 +20,7 @@ require "ostruct"
 require "optparse"
 require "json"
 
+require "grn2drn/version"
 require "grn2drn/schema-converter"
 
 def open_output(path)
@@ -35,6 +36,8 @@ end
 options = OpenStruct.new
 options.output_path = "-"
 option_parser = OptionParser.new do |parser|
+  parser.version = Grn2Drn::VERSION
+
   parser.banner += " INPUT"
 
   parser.separator("")
