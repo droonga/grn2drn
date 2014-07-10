@@ -42,7 +42,7 @@ option_parser = OptionParser.new do |parser|
   end
 
   parser.on("-e, --encoding=ENCODING",
-            "Read input dump as strings encoded in ENCODING"
+            "Read input dump as strings encoded in ENCODING",
             "(#{options.encoding})") do |encoding|
     options.encoding = encoding
   end
