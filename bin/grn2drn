@@ -41,7 +41,7 @@ option_parser = OptionParser.new do |parser|
     options.dataset = dataset
   end
 
-  parser.on("-e, --encoding=ENCODING",
+  parser.on("--encoding=ENCODING",
             "Read input as strings encoded in ENCODING",
             "(#{options.encoding})") do |encoding|
     options.encoding = encoding
