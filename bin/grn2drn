@@ -25,6 +25,7 @@ require "grn2drn/command-converter"
 options = OpenStruct.new
 options.output_path = "-"
 options.dataset = "Default"
+options.encoding = "UTF-8"
 option_parser = OptionParser.new do |parser|
   parser.version = Grn2Drn::VERSION
 
@@ -34,15 +35,18 @@ option_parser = OptionParser.new do |parser|
   parser.separator("Converts Groonga commands to Droonga messages")
 
   parser.separator("")
-  parser.separator("Required parameters:")
   parser.on("--dataset=DATASET",
             "Use DATASET as \"dataset\" field value",
             "(#{options.dataset})") do |dataset|
     options.dataset = dataset
   end
 
-  parser.separator("")
-  parser.separator("Optional parameters:")
+  parser.on("-e, --encoding=ENCODING",
+            "Read input dump as strings encoded in ENCODING"
+            "(#{options.encoding})") do |encoding|
+    options.encoding = encoding
+  end
+
   parser.on("--id-prefix=PREFIX",
             "Use PREFIX as prefix of IDs") do |prefix|
     options.id_prefix = prefix
@@ -78,6 +82,7 @@ convert_options = {
   :date => options.date,
   :reply_to => options.reply_to,
   :dataset => options.dataset,
+  :encoding => options.encoding,
 }
 converter = Grn2Drn::CommandConverter.new(convert_options)
 
