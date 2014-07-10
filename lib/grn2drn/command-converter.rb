@@ -54,7 +54,7 @@ module Grn2Drn
       end
 
       input.each_line do |line|
-        @command_parser << line
+        @command_parser << line.force_encoding("UTF-8")
       end
       @command_parser.finish
     end
