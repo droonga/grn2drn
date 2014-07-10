@@ -82,7 +82,6 @@ convert_options = {
   :date => options.date,
   :reply_to => options.reply_to,
   :dataset => options.dataset,
-  :encoding => options.encoding,
 }
 converter = Grn2Drn::CommandConverter.new(convert_options)
 
@@ -95,6 +94,8 @@ def open_output(path)
     end
   end
 end
+
+ARGF.set_encoding(options.encoding)
 
 open_output(options.output_path) do |output|
   converter.convert(ARGF) do |command|

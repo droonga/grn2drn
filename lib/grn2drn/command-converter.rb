@@ -53,9 +53,8 @@ module Grn2Drn
         command.original_source.clear
       end
 
-      encoding = @options[:encoding] || "UTF-8"
       input.each_line do |line|
-        @command_parser << line.force_encoding(encoding)
+        @command_parser << line
       end
       @command_parser.finish
     end
