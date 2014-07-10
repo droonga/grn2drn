@@ -1,5 +1,12 @@
 # News
 
+## 1.0.3: 2014-07-10 (planned)
+
+### Improvements
+
+  * `grn2drn`: Set `Default` as the default dataset name. Now you don't have to specify `--dataset` option anymore, if you use the default dataset name.
+  * `grn2drn`: Support a new `--encoding` (or `-e`) option to specify the encoding of the dump (`UTF-8` by default.)
+
 ## 1.0.2: 2014-04-04
 
 ### Improvements
