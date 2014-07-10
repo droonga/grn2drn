@@ -24,6 +24,7 @@ require "grn2drn/command-converter"
 
 options = OpenStruct.new
 options.output_path = "-"
+options.dataset = "Default"
 option_parser = OptionParser.new do |parser|
   parser.version = Grn2Drn::VERSION
 
@@ -35,7 +36,8 @@ option_parser = OptionParser.new do |parser|
   parser.separator("")
   parser.separator("Required parameters:")
   parser.on("--dataset=DATASET",
-            "Use DATASET as \"dataset\" field value") do |dataset|
+            "Use DATASET as \"dataset\" field value",
+            "(#{options.dataset})") do |dataset|
     options.dataset = dataset
   end
 
