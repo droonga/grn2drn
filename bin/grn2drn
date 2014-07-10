@@ -76,16 +76,6 @@ convert_options = {
 }
 converter = Grn2Drn::CommandConverter.new(convert_options)
 
-def open_input(source_file)
-  if source_file.nil?
-    yield($stdin)
-  else
-    File.open(source_file) do |input|
-      yield(input)
-    end
-  end
-end
-
 def open_output(path)
   if path == "-"
     yield($stdout)
