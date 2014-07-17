@@ -14,5 +14,5 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module Grn2Drn
-  VERSION = "1.0.3"
+  VERSION = "1.0.4"
 end
