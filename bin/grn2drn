@@ -17,6 +17,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 require "ostruct"
+require "fileutils"
 require "optparse"
 
 require "grn2drn/version"
@@ -89,6 +90,7 @@ def open_output(path)
   if path == "-"
     yield($stdout)
   else
+    FileUtils.mkdir_p(File.dirname(path))
     File.open(path, "w") do |output|
       yield(output)
     end
