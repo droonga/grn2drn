@@ -1,5 +1,11 @@
 # News
 
+## 1.0.4: 2014-09-29 (planned)
+
+### Improvements
+
+  * Create output directory automatically.
+
 ## 1.0.3: 2014-07-10
 
 ### Improvements
