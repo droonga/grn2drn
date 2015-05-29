@@ -1,5 +1,11 @@
 # News
 
+## 1.0.5: 2015-05-29
+
+### Improvements
+
+  * `grn2drn`: Supports conversion of any Groonga command.
+
 ## 1.0.4: 2014-09-29
 
 ### Improvements
