@@ -32,15 +32,8 @@ module Grn2Drn
 
     def convert(input, &block)
       @command_parser.on_command do |command|
-        case command.name
-        when "table_create"
-          yield create_table_create_command(command)
-        when "table_remove"
-          yield create_table_remove_command(command)
-        when "column_create"
-          yield create_column_create_command(command)
-        when "select"
-          yield create_select_command(command)
+        unless command.name == "load"
+          yield create_message(command.name, command_to_body(command))
         end
       end
 
@@ -104,18 +97,6 @@ module Grn2Drn
       stringify_keys(command.arguments)
     end
 
-    def create_table_create_command(command)
-      create_message("table_create", command_to_body(command))
-    end
-
-    def create_table_remove_command(command)
-      create_message("table_remove", command_to_body(command))
-    end
-
-    def create_column_create_command(command)
-      create_message("column_create", command_to_body(command))
-    end
-
     def create_add_command(command, columns, record)
       table = command[:table]
       body = {
@@ -140,10 +121,6 @@ module Grn2Drn
       end
 
       create_message("add", body)
-    end
-
-    def create_select_command(command)
-      create_message("select", command_to_body(command))
     end
   end
 end
