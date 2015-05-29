@@ -1,4 +1,4 @@
-# Copyright (C) 2014 Droonga Project
+# Copyright (C) 2015 Droonga Project
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,5 +14,5 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module Grn2Drn
-  VERSION = "1.0.5"
+  VERSION = "1.0.6"
 end
