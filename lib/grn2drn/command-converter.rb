@@ -86,8 +86,10 @@ module Grn2Drn
       Digest::SHA1.hexdigest("#{now_msec}:#{random_string}")
     end
 
+    MICRO_SECONDS_DECIMAL_PLACE = 6
+
     def format_date(time)
-      time.iso8601
+      time.utc.iso8601(MICRO_SECONDS_DECIMAL_PLACE)
     end
 
     def stringify_keys(hash)
