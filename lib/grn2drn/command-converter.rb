@@ -62,14 +62,15 @@ module Grn2Drn
         @count += 1
       end
 
-      {
+      message = {
         "id" => id,
         "date" => format_date(@options[:date] || Time.now),
-        "replyTo" => @options[:reply_to],
         "dataset" => @options[:dataset],
         "type" => type,
         "body" => body,
       }
+      message["replyTo"] = @options[:reply_to] if @options[:reply_to]
+      message
     end
 
     def new_unique_id
